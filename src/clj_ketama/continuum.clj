@@ -37,6 +37,8 @@
         (neg? hash)
         (throw (UnsupportedOperationException. "hash value is less than zero"))
 
+        ;; // TODO remove next two ridiculous checks to constructor for example
+        ;; // complexity o(n) because of find-point-for has complexity o(log(n))
         (some #(neg? (:hash %)) pts)
         (throw (UnsupportedOperationException. "some points has negative hash values"))
 
