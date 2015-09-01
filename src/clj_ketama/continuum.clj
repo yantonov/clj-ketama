@@ -34,10 +34,10 @@
         (empty? pts)
         (throw (UnsupportedOperationException. "no points"))
 
-        (< hash 0)
+        (neg? hash)
         (throw (UnsupportedOperationException. "hash value is less than zero"))
 
-        (some #(< (:hash %) 0) pts)
+        (some #(neg? (:hash %)) pts)
         (throw (UnsupportedOperationException. "some points has negative hash values"))
 
         (not (sorted-by-hash? pts))
