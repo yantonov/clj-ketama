@@ -1,11 +1,16 @@
 /target
 /classes
 /checkouts
-pom.xml
-pom.xml.asc
+/pom.xml
+/pom.xml.asc
 *.jar
 *.class
 /.lein-*
 /.nrepl-port
 .hgignore
 .hg/
+
+# ide specific files
+/tools/test-generator/.idea/
+/tools/test-generator/*.iml
+/tools/test-generator/target
