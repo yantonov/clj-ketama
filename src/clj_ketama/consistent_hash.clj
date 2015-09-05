@@ -1,5 +1,5 @@
 (ns clj-ketama.consistent-hash
-  (:require [clj-ketama.continuum])
+  (:require [clj-ketama.continuum :refer :all])
   (:import [clj_ketama.continuum Continuum])
   (:require [clj-ketama.server])
   (:import [clj_ketama.server Server])
@@ -66,4 +66,4 @@
         (throw (IllegalArgumentException. "no servers"))
 
         true
-        (Continuum. (get-points servers))))))
+        (create-continuum (get-points servers))))))

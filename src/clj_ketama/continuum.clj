@@ -29,21 +29,25 @@
 (defrecord Continuum [points]
   IContinuum
   (find-point-for [this hash]
-    (let [pts (vec (:points this))]
-      (cond
-        (empty? pts)
-        (throw (UnsupportedOperationException. "no points"))
+    (cond
+      (neg? hash)
+      (throw (UnsupportedOperationException. "hash value is less than zero"))
 
-        (neg? hash)
-        (throw (UnsupportedOperationException. "hash value is less than zero"))
-
-        ;; // TODO remove next two ridiculous checks to constructor for example
-        ;; // complexity o(n) because of find-point-for has complexity o(log(n))
-        (some #(neg? (:hash %)) pts)
-        (throw (UnsupportedOperationException. "some points has negative hash values"))
-
-        (not (sorted-by-hash? pts))
-        (throw (UnsupportedOperationException. "points are not sorted by hash"))
-
-        true
+      true
+      (let [pts (vec (:points this))]
         (find-ceiling pts hash)))))
+
+(defn create-continuum [points]
+  (let [pts (vec points)]
+    (cond
+      (empty? pts)
+      (throw (UnsupportedOperationException. "no points"))
+
+      (some #(neg? (:hash %)) pts)
+      (throw (UnsupportedOperationException. "some points has negative hash values"))
+
+      (not (sorted-by-hash? pts))
+      (throw (UnsupportedOperationException. "points are not sorted by hash"))
+
+      true
+      (Continuum. pts))))

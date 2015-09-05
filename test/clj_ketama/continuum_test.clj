@@ -1,6 +1,6 @@
 (ns clj-ketama.continuum-test
   (:require [clojure.test :refer :all])
-  (:require [clj-ketama.continuum])
+  (:require [clj-ketama.continuum :refer :all])
   (:import [clj_ketama.continuum Continuum])
   (:require [clj-ketama.server])
   (:import [clj_ketama.server Server])
@@ -8,24 +8,22 @@
   (:import [clj_ketama.point Point]))
 
 (deftest no-points
-  (let [c (Continuum. [])]
-    (is (thrown? UnsupportedOperationException
-                 (. c find-point-for 0)))))
+  (is (thrown? UnsupportedOperationException
+               (create-continuum []))))
 
 (deftest negative-hash
-  (let [c (Continuum. [(Point. (Server. "srv" 1) 123)])]
+  (let [c (create-continuum [(Point. (Server. "srv" 1) 123)])]
     (is (thrown? UnsupportedOperationException
                  (. c find-point-for -1)))))
 
 (deftest negative-hash-values
-  (let [c (Continuum. [(Point. (Server. "s1" 1) 123)
-                       (Point. (Server. "s2" 1) 100000)
-                       (Point. (Server. "s3" 1) 456)])]
-    (is (thrown? UnsupportedOperationException
-                 (. c find-point-for 0)))))
+  (is (thrown? UnsupportedOperationException
+               (create-continuum [(Point. (Server. "s1" 1) 123)
+                                  (Point. (Server. "s2" 1) 100000)
+                                  (Point. (Server. "s3" 1) 456)]))))
 
 (deftest single-point
-  (let [c (Continuum. [(Point. (Server. "srv" 1) 123)])]
+  (let [c (create-continuum [(Point. (Server. "srv" 1) 123)])]
     (are [hash expected-name]
         (is (= (-> (. c find-point-for hash)
                    :server
@@ -34,8 +32,8 @@
       124 "srv")))
 
 (deftest couple-of-points
-  (let [c (Continuum. [(Point. (Server. "s1" 1) 10)
-                       (Point. (Server. "s2" 1) 20)])]
+  (let [c (create-continuum [(Point. (Server. "s1" 1) 10)
+                             (Point. (Server. "s2" 1) 20)])]
     (are [hash expected-name]
         (is (= (-> (. c find-point-for hash)
                    :server
@@ -49,9 +47,9 @@
       0 "s1")))
 
 (deftest three-points
-  (let [c (Continuum. [(Point. (Server. "s1" 1) 10)
-                       (Point. (Server. "s2" 1) 20)
-                       (Point. (Server. "s3" 1) 30)])]
+  (let [c (create-continuum [(Point. (Server. "s1" 1) 10)
+                             (Point. (Server. "s2" 1) 20)
+                             (Point. (Server. "s3" 1) 30)])]
     (are [hash expected-name]
         (is (= (-> (. c find-point-for hash)
                    :server
