@@ -13,9 +13,10 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
   (Math/abs (.hashCode resource))
 
 
-(def ring1 (atom (ketama/make-ring [(Server. "192.168.1.1" 1)
-                                   (Server. "192.168.1.2" 2)
-                                   (Server. "192.168.1.3" 3)])))
+(def ring1 (atom (ketama/make-ring [(Server. "192.168.1.1" 1) ; server1 weight = 1 
+                                    (Server. "192.168.1.2" 2) ; server2 weight = 2
+                                    (Server. "192.168.1.3" 3) ; serverweight = 3
+                                   ])))
 
 (ketama/find-node @ring1 (resource-hash "some_resource-1"))
 ;; "192.168.1.3"
