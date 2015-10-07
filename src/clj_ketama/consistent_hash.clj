@@ -39,17 +39,17 @@
                             (assoc h k server)))
                         h
                         (range 4))))
-            hash 
+            hash
             (range factor))))
 
 (defn- get-points [servers]
   (let [total-weight (reduce + 0 (map :weight servers))
-        server-count (count servers)
+        total-server-count (count servers)
         long-to-server (reduce (fn [hash server]
                                  (add-server hash
                                              server
                                              total-weight
-                                             server-count))
+                                             total-server-count))
                                (hash-map)
                                servers)]
     (sort-by :hash
@@ -60,10 +60,10 @@
 (defrecord ConsistentHash [servers]
   IConsistentHash
   (build [this]
-    (let [svrs (:servers this)]
-      (cond
-        (empty? svrs)
-        (throw (IllegalArgumentException. "no servers"))
+         (let [svrs (:servers this)]
+           (cond
+             (empty? svrs)
+             (throw (IllegalArgumentException. "no servers"))
 
-        true
-        (create-continuum (get-points servers))))))
+             true
+             (create-continuum (get-points servers))))))
