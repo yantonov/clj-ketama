@@ -9,15 +9,38 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
 (require '[clj-ketama.server])
 (import  '[clj_ketama.server Server])
 
-(def ring (atom (ketama/make-ring [(Server. "192.168.1.1" 1)
-                                   (Server. "192.168.1.2" 2)
-                                   (Server. "192.168.1.3" 3)])))
-
 (defn resource-hash [resource]
   (Math/abs (.hashCode resource))
 
-(ketama/find-node @ring (resource-hash "some_resource"))
-(ketama/find-node @ring (resource-hash "test_resource"))
+
+(def ring1 (atom (ketama/make-ring [(Server. "192.168.1.1" 1)
+                                   (Server. "192.168.1.2" 2)
+                                   (Server. "192.168.1.3" 3)])))
+
+(ketama/find-node @ring1 (resource-hash "some_resource-1"))
+;; "192.168.1.2"
+(ketama/find-node @ring1 (resource-hash "test_resource"))
+;; "192.168.1.3"
+
+(def ring2 (atom (ketama/make-ring [(Server. "192.168.1.1" 1)
+                                   (Server. "192.168.1.2" 2)
+                                   (Server. "192.168.1.3" 3)
+                                   (Server. "192.168.1.4" 4)])))
+
+(ketama/find-node @ring2 (resource-hash "some_resource-1"))
+;; "192.168.1.2"
+(ketama/find-node @ring2 (resource-hash "test_resource"))
+;; "192.168.1.3"
+
+(def ring3 (atom (ketama/make-ring [(Server. "192.168.1.1" 1)
+                                   (Server. "192.168.1.2" 2)])))
+
+(ketama/find-node @ring3 (resource-hash "some_resource-1"))
+;; "192.168.1.2"
+(ketama/find-node @ring3 (resource-hash "test_resource"))
+;; "192.168.1.3"
+
+
 ```
 
 ## Links

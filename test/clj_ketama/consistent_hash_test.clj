@@ -11,9 +11,7 @@
 (deftest single-server
   (let [ring (ketama/make-ring [(Server. "svr" 123)])]
     (is (= "svr"
-           (-> (ketama/find-node ring 0)
-               :server
-               :name)))))
+           (ketama/find-node ring 0)))))
 
 (deftest ring-distribution-single
   (let [servers [(Server. "abc" 2)
@@ -22,9 +20,7 @@
         ring (ketama/make-ring servers)]
     (are [hash expected-server-name]
         (= expected-server-name
-           (-> (ketama/find-node ring hash)
-               :server
-               :name))
+           (ketama/find-node ring hash))
       0 "xyz"
       348807 "xyz"
       1490535 "abc"

@@ -63,4 +63,6 @@
     (create-continuum (get-points servers))))
 
 (defn find-node [ring hash]
-  (. ring find-point-for hash))
+  (-> (. ring find-point-for hash)
+      :server
+      :name))
