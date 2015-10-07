@@ -1,20 +1,27 @@
 # clj-ketama
 
-clojure [1] implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1&q=ketama+consistent+hashing "ketama") consistent hashing scheme
+clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1&q=ketama+consistent+hashing "ketama") consistent hashing scheme
 
 ## Usage
 
-FIXME
+```Clojure
+(require '[clj-ketama.consistent-hash :as ketama])
+(require '[clj-ketama.server])
+(import  '[clj_ketama.server Server])
 
-## License
+(def ring (atom (ketama/make-ring [(Server. "192.168.1.1" 1)
+                                   (Server. "192.168.1.2" 2)
+                                   (Server. "192.168.1.3" 3)])))
 
-Copyright © 2015 FIXME
+(defn resource-hash [resource]
+  (Math/abs (.hashCode resource))
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+(ketama/find-node @ring (resource-hash "some_resource"))
+(ketama/find-node @ring (resource-hash "test_resource"))
+```
 
 ## Links
 
-  1. Clojure [http://clojure.org/](http://clojure.org/ "Clojure")                 
-  2. Consistent hashing [https://en.wikipedia.org/wiki/Consistent_hashing](https://en.wikipedia.org/wiki/Consistent_hashing "Consistent hashing")
-  3. Ketama consistent hashing algorithm [link](https://www.google.ru/?gws_rd=ssl#newwindow=1&q=ketama+consistent+hashing "ketama") 
+1. Clojure [http://clojure.org/](http://clojure.org/ "Clojure")  
+2. Consistent hashing [https://en.wikipedia.org/wiki/Consistent_hashing](https://en.wikipedia.org/wiki/Consistent_hashing "Consistent hashing")  
+3. Ketama consistent hashing algorithm [link](https://www.google.ru/?gws_rd=ssl#newwindow=1&q=ketama+consistent+hashing "ketama")  
