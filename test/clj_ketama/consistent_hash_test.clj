@@ -1,20 +1,17 @@
 (ns clj-ketama.consistent-hash-test
   (:require [clojure.test :refer :all])
-  (:require [clj-ketama.consistent-hash])
-  (:import [clj_ketama.consistent_hash ConsistentHash])
+  (:require [clj-ketama.consistent-hash :as ketama])
   (:require [clj-ketama.server])
   (:import [clj_ketama.server Server]))
 
 (deftest no-servers
-  (let [h (ConsistentHash. [])]
-    (is (thrown? IllegalArgumentException
-                 (. h build [])))))
+  (is (thrown? IllegalArgumentException
+               (ketama/make-ring []))))
 
 (deftest single-server
-  (let [h (ConsistentHash. [(Server. "svr" 123)])
-        c (. h build)]
+  (let [ring (ketama/make-ring [(Server. "svr" 123)])]
     (is (= "svr"
-           (-> (. c find-point-for 0)
+           (-> (ketama/find-node ring 0)
                :server
                :name)))))
 
@@ -22,16 +19,10 @@
   (let [servers [(Server. "abc" 2)
                  (Server. "def" 10)
                  (Server. "xyz" 19)]
-        h (ConsistentHash. servers)
-        c (. h build)
-        x (do (println (map #(str (:hash %)
-                                  " "
-                                  (:name (:server %))
-                                  "\n")
-                            (:points c))) 1)]
+        ring (ketama/make-ring servers)]
     (are [hash expected-server-name]
         (= expected-server-name
-           (-> (. c find-point-for hash)
+           (-> (ketama/find-node ring hash)
                :server
                :name))
       0 "xyz"
@@ -508,4 +499,3 @@
       4261097964 "xyz"
       4270143576 "def"
       4270143577 "xyz")))
-

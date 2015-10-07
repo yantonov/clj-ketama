@@ -7,9 +7,6 @@
   (:import [clj_ketama.point Point])
   (:import [java.security MessageDigest]))
 
-(defprotocol IConsistentHash
-  (build [this]))
-
 (defn- add-server [hash
                    server
                    total-weight
@@ -57,13 +54,13 @@
                     (Point. value key))
                   long-to-server))))
 
-(defrecord ConsistentHash [servers]
-  IConsistentHash
-  (build [this]
-         (let [svrs (:servers this)]
-           (cond
-             (empty? svrs)
-             (throw (IllegalArgumentException. "no servers"))
+(defn make-ring [servers]
+  (cond
+    (empty? servers)
+    (throw (IllegalArgumentException. "no servers"))
 
-             true
-             (create-continuum (get-points servers))))))
+    true
+    (create-continuum (get-points servers))))
+
+(defn find-node [ring hash]
+  (. ring find-point-for hash))
