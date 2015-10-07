@@ -18,7 +18,7 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
                                    (Server. "192.168.1.3" 3)])))
 
 (ketama/find-node @ring1 (resource-hash "some_resource-1"))
-;; "192.168.1.2"
+;; "192.168.1.3"
 (ketama/find-node @ring1 (resource-hash "test_resource"))
 ;; "192.168.1.3"
 
@@ -28,7 +28,7 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
                                    (Server. "192.168.1.4" 4)])))
 
 (ketama/find-node @ring2 (resource-hash "some_resource-1"))
-;; "192.168.1.2"
+;; "192.168.1.4"
 (ketama/find-node @ring2 (resource-hash "test_resource"))
 ;; "192.168.1.3"
 
@@ -38,7 +38,7 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
 (ketama/find-node @ring3 (resource-hash "some_resource-1"))
 ;; "192.168.1.2"
 (ketama/find-node @ring3 (resource-hash "test_resource"))
-;; "192.168.1.3"
+;; "192.168.1.2"
 
 
 ```
