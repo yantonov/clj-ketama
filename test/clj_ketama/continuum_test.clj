@@ -25,7 +25,10 @@
 (deftest single-point
   (let [c (create-continuum [(Point. (Server. "srv" 1) 123)])]
     (are [hash expected-name]
-        (is (= (. c find-point-for hash) expected-name))
+        (is (= (-> (. c find-point-for hash)
+                   :server
+                   :name)
+               expected-name))
       0 "srv"
       124 "srv")))
 
@@ -33,7 +36,10 @@
   (let [c (create-continuum [(Point. (Server. "s1" 1) 10)
                              (Point. (Server. "s2" 1) 20)])]
     (are [hash expected-name]
-        (is (= (. c find-point-for hash) expected-name))
+        (is (= (-> (. c find-point-for hash)
+                   :server
+                   :name)
+               expected-name))
       10 "s1"
       11 "s2"
       19 "s2"
@@ -49,7 +55,8 @@
     (are [hash expected-name]
         (is (= (-> (. c find-point-for hash)
                    :server
-                   :name) expected-name))
+                   :name)
+               expected-name))
       10 "s1"
       11 "s2"
       19 "s2"
