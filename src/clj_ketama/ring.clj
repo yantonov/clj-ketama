@@ -1,7 +1,7 @@
-(ns clj-ketama.continuum
+(ns clj-ketama.ring
   (:import [java.lang UnsupportedOperationException]))
 
-(defprotocol IContinuum
+(defprotocol IRing
   (find-point-for [this ^long hash]))
 
 (defn- find-ceiling [points hash]
@@ -26,8 +26,8 @@
                (:hash b)))
           (partition 2 1 points)))
 
-(defrecord Continuum [points]
-  IContinuum
+(defrecord Ring [points]
+  IRing
   (find-point-for [this hash]
     (cond
       (neg? hash)
@@ -37,7 +37,7 @@
       (let [pts (vec (:points this))]
         (find-ceiling pts hash)))))
 
-(defn create-continuum [points]
+(defn make-ring [points]
   (let [pts (vec points)]
     (cond
       (empty? pts)
@@ -50,4 +50,4 @@
       (throw (UnsupportedOperationException. "points are not sorted by hash"))
 
       true
-      (Continuum. pts))))
+      (Ring. pts))))

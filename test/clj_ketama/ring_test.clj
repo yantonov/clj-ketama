@@ -1,7 +1,7 @@
-(ns clj-ketama.continuum-test
+(ns clj-ketama.ring-test
   (:require [clojure.test :refer :all])
-  (:require [clj-ketama.continuum :refer :all])
-  (:import [clj_ketama.continuum Continuum])
+  (:require [clj-ketama.ring :as ring])
+  (:import [clj_ketama.ring Ring])
   (:require [clj-ketama.server])
   (:import [clj_ketama.server Server])
   (:require [clj-ketama.point])
@@ -9,21 +9,21 @@
 
 (deftest no-points
   (is (thrown? UnsupportedOperationException
-               (create-continuum []))))
+               (ring/make-ring []))))
 
 (deftest negative-hash
-  (let [c (create-continuum [(Point. (Server. "srv" 1) 123)])]
+  (let [c (ring/make-ring [(Point. (Server. "srv" 1) 123)])]
     (is (thrown? UnsupportedOperationException
                  (. c find-point-for -1)))))
 
 (deftest negative-hash-values
   (is (thrown? UnsupportedOperationException
-               (create-continuum [(Point. (Server. "s1" 1) 123)
-                                  (Point. (Server. "s2" 1) 100000)
-                                  (Point. (Server. "s3" 1) 456)]))))
+               (ring/make-ring [(Point. (Server. "s1" 1) 123)
+                                (Point. (Server. "s2" 1) 100000)
+                                (Point. (Server. "s3" 1) 456)]))))
 
 (deftest single-point
-  (let [c (create-continuum [(Point. (Server. "srv" 1) 123)])]
+  (let [c (ring/make-ring [(Point. (Server. "srv" 1) 123)])]
     (are [hash expected-name]
         (is (= (-> (. c find-point-for hash)
                    :server
@@ -33,8 +33,8 @@
       124 "srv")))
 
 (deftest couple-of-points
-  (let [c (create-continuum [(Point. (Server. "s1" 1) 10)
-                             (Point. (Server. "s2" 1) 20)])]
+  (let [c (ring/make-ring [(Point. (Server. "s1" 1) 10)
+                           (Point. (Server. "s2" 1) 20)])]
     (are [hash expected-name]
         (is (= (-> (. c find-point-for hash)
                    :server
@@ -49,9 +49,9 @@
       0 "s1")))
 
 (deftest three-points
-  (let [c (create-continuum [(Point. (Server. "s1" 1) 10)
-                             (Point. (Server. "s2" 1) 20)
-                             (Point. (Server. "s3" 1) 30)])]
+  (let [c (ring/make-ring [(Point. (Server. "s1" 1) 10)
+                           (Point. (Server. "s2" 1) 20)
+                           (Point. (Server. "s3" 1) 30)])]
     (are [hash expected-name]
         (is (= (-> (. c find-point-for hash)
                    :server

@@ -1,6 +1,6 @@
 (ns clj-ketama.consistent-hash
-  (:require [clj-ketama.continuum :refer :all])
-  (:import [clj_ketama.continuum Continuum])
+  (:require [clj-ketama.ring :as ring])
+  (:import [clj_ketama.ring Ring])
   (:require [clj-ketama.server])
   (:import [clj_ketama.server Server])
   (:require [clj-ketama.point])
@@ -60,7 +60,7 @@
     (throw (IllegalArgumentException. "no servers"))
 
     true
-    (create-continuum (get-points servers))))
+    (ring/make-ring (get-points servers))))
 
 (defn find-node [ring hash]
   (-> (. ring find-point-for hash)
