@@ -11,16 +11,23 @@
   (is (thrown? UnsupportedOperationException
                (ring/make-ring []))))
 
-(deftest negative-hash
+(deftest try-to-find-point-by-negative-hash
   (let [c (ring/make-ring [(Point. (Server. "srv" 1) 123)])]
     (is (thrown? UnsupportedOperationException
                  (. c find-point-for -1)))))
 
-(deftest negative-hash-values
+(deftest not-sorted-by-hash
   (is (thrown? UnsupportedOperationException
                (ring/make-ring [(Point. (Server. "s1" 1) 123)
                                 (Point. (Server. "s2" 1) 100000)
                                 (Point. (Server. "s3" 1) 456)]))))
+
+(deftest point-has-negative-hash
+  (is (thrown? UnsupportedOperationException
+               (ring/make-ring [(Point. (Server. "s1" 1) 123)
+                                (Point. (Server. "s2" 1) -100000)
+                                (Point. (Server. "s3" 1) 456)]))))
+
 
 (deftest single-point
   (let [c (ring/make-ring [(Point. (Server. "srv" 1) 123)])]
