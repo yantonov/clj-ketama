@@ -34,7 +34,7 @@
       (throw (UnsupportedOperationException. "hash value is less than zero"))
 
       true
-      (let [pts (vec (:points this))]
+      (let [pts (:points this)]
         (find-ceiling pts hash)))))
 
 (defn make-ring [points]
@@ -50,4 +50,4 @@
       (throw (UnsupportedOperationException. "points are not sorted by hash"))
 
       true
-      (Ring. pts))))
+      (Ring. (vec pts)))))
