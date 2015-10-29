@@ -23,10 +23,12 @@
                                 (Point. (Server. "s3" 1) 456)]))))
 
 (deftest point-has-negative-hash
-  (is (not (thrown? UnsupportedOperationException
-                    (ring/make-ring [(Point. (Server. "s1" 1) -123)
-                                     (Point. (Server. "s2" 1) 123)
-                                     (Point. (Server. "s3" 1) 456)])))))
+  (try
+    (ring/make-ring [(Point. (Server. "s1" 1) -123)
+                     (Point. (Server. "s2" 1) 234)
+                     (Point. (Server. "s3" 1) 345)])
+    (catch UnsupportedOperationException e
+      (is false))))
 
 
 (deftest single-point
