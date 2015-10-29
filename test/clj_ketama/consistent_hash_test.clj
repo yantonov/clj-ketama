@@ -13,7 +13,7 @@
     (is (= "svr"
            (ketama/find-node ring 0)))))
 
-(deftest ring-distribution-single
+(deftest ring-distribution-simple
   (let [servers [(Server. "abc" 2)
                  (Server. "def" 10)
                  (Server. "xyz" 19)]
