@@ -1,22 +1,21 @@
 (ns clj-ketama.consistent-hash-test
   (:require [clojure.test :refer :all])
   (:require [clj-ketama.consistent-hash :as ketama])
-  (:require [clj-ketama.server])
-  (:import [clj_ketama.server Server]))
+  (:require [clj-ketama.server :as svr]))
 
 (deftest no-servers
   (is (thrown? IllegalArgumentException
                (ketama/make-ring []))))
 
 (deftest single-server
-  (let [ring (ketama/make-ring [(Server. "svr" 123)])]
+  (let [ring (ketama/make-ring [(svr/make-server "svr" 123)])]
     (is (= "svr"
            (ketama/find-node ring 0)))))
 
 (deftest ring-distribution-simple
-  (let [servers [(Server. "abc" 2)
-                 (Server. "def" 10)
-                 (Server. "xyz" 19)]
+  (let [servers [(svr/make-server "abc" 2)
+                 (svr/make-server "def" 10)
+                 (svr/make-server "xyz" 19)]
         ring (ketama/make-ring servers)]
     (are [hash expected-server-name]
         (= expected-server-name
