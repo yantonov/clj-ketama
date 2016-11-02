@@ -4,3 +4,6 @@
 
 (defrecord Point [^Server server
                   ^long hash])
+
+(defn make-point [server hash]
+  (Point. server hash))

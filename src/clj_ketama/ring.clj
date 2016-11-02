@@ -1,7 +1,6 @@
 (ns clj-ketama.ring
   (:import [java.lang UnsupportedOperationException])
-  (:require [clj-ketama.point])
-  (:import [clj_ketama.point Point]))
+  (:require [clj-ketama.point :as p]))
 
 (defprotocol IRing
   (find-point-for [this ^long hash]))
@@ -25,24 +24,24 @@
   "check if given vector of points sorted by point hash"
   (every? (fn [[a b]]
             (< (:hash a)
-                (:hash b)))
+               (:hash b)))
           (partition 2 1 points)))
 
 (defrecord Ring [points]
   IRing
   (find-point-for
-   [this hash]
-   (cond
-     (neg? hash)
-     (throw (UnsupportedOperationException. "hash value is less than zero"))
+    [this hash]
+    (cond
+      (neg? hash)
+      (throw (UnsupportedOperationException. "hash value is less than zero"))
 
-     true
-     (let [pts (:points this)]
-       (find-ceiling pts hash)))))
+      true
+      (let [pts (:points this)]
+        (find-ceiling pts hash)))))
 
 (defn make-ring [points]
-  (let [pts (vec (map #(Point. (:server %)
-                               (Math/abs (long (:hash %))))
+  (let [pts (vec (map #(p/make-point (:server %)
+                                     (Math/abs (long (:hash %))))
                       points))]
     (cond
       (empty? pts)

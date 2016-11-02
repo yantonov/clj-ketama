@@ -2,9 +2,7 @@
   (:require [clj-ketama.ring :as ring])
   (:import [clj_ketama.ring Ring])
   (:require [clj-ketama.server])
-  (:import [clj_ketama.server Server])
-  (:require [clj-ketama.point])
-  (:import [clj_ketama.point Point])
+  (:require [clj-ketama.point :as p])
   (:import [java.security MessageDigest]))
 
 (defn- add-server [hash
@@ -51,7 +49,7 @@
                                servers)]
     (sort-by :hash
              (map (fn [[key value]]
-                    (Point. value key))
+                    (p/make-point value key))
                   long-to-server))))
 
 (defn make-ring [servers]
