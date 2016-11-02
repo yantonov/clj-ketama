@@ -6,16 +6,14 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
 
 ```Clojure
 (require '[clj-ketama.consistent-hash :as ketama])
-(require '[clj-ketama.server])
-(import  '[clj_ketama.server Server])
+(require '[clj-ketama.server :as s])
 
 (defn resource-hash [resource]
   (Math/abs (.hashCode resource))
 
-
-(def ring1 (atom (ketama/make-ring [(Server. "192.168.1.1" 1) ; server1 weight = 1 
-                                    (Server. "192.168.1.2" 2) ; server2 weight = 2
-                                    (Server. "192.168.1.3" 3) ; serverweight = 3
+(def ring1 (atom (ketama/make-ring [(s/make-server "192.168.1.1" 1) ; server1 weight = 1 
+                                    (s/make-server "192.168.1.2" 2) ; server2 weight = 2
+                                    (s/make-server "192.168.1.3" 3) ; serverweight = 3
                                    ])))
 
 (ketama/find-node @ring1 (resource-hash "some_resource-1"))
@@ -23,18 +21,18 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
 (ketama/find-node @ring1 (resource-hash "test_resource"))
 ;; "192.168.1.3"
 
-(def ring2 (atom (ketama/make-ring [(Server. "192.168.1.1" 1)
-                                   (Server. "192.168.1.2" 2)
-                                   (Server. "192.168.1.3" 3)
-                                   (Server. "192.168.1.4" 4)])))
+(def ring2 (atom (ketama/make-ring [(s/make-server "192.168.1.1" 1)
+                                    (s/make-server "192.168.1.2" 2)
+                                    (s/make-server "192.168.1.3" 3)
+                                    (s/make-server "192.168.1.4" 4)])))
 
 (ketama/find-node @ring2 (resource-hash "some_resource-1"))
 ;; "192.168.1.4"
 (ketama/find-node @ring2 (resource-hash "test_resource"))
 ;; "192.168.1.3"
 
-(def ring3 (atom (ketama/make-ring [(Server. "192.168.1.1" 1)
-                                   (Server. "192.168.1.2" 2)])))
+(def ring3 (atom (ketama/make-ring [(s/make-server "192.168.1.1" 1)
+                                    (s/make-server "192.168.1.2" 2)])))
 
 (ketama/find-node @ring3 (resource-hash "some_resource-1"))
 ;; "192.168.1.2"
