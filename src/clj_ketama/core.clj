@@ -1,7 +1,6 @@
 (ns clj-ketama.core
   (:require [clj-ketama.ring :as ring])
   (:import [clj_ketama.ring Ring])
-  (:require [clj-ketama.server])
   (:require [clj-ketama.point :as p])
   (:import [java.security MessageDigest]))
 
@@ -58,9 +57,13 @@
     (throw (IllegalArgumentException. "no servers"))
 
     true
-    (ring/make-ring (get-points servers))))
+    {:ring (ring/make-ring (get-points servers))
+     :servers servers}))
 
 (defn find-node [ring hash]
-  (-> (. ring find-point-for hash)
+  (-> (. (:ring  ring) find-point-for hash)
       :server
       :name))
+
+(defn get-servers [ring]
+  (:servers ring))

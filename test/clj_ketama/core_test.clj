@@ -12,6 +12,13 @@
     (is (= "svr"
            (ketama/find-node ring 0)))))
 
+(deftest get-servers
+  (let [servers [(svr/make-server "abc" 2)
+                 (svr/make-server "def" 10)
+                 (svr/make-server "xyz" 19)]
+        ring (ketama/make-ring servers)]
+    (is (= servers (ketama/get-servers ring)))))
+
 (deftest ring-distribution-simple
   (let [servers [(svr/make-server "abc" 2)
                  (svr/make-server "def" 10)

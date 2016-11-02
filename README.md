@@ -20,6 +20,7 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
 ;; "192.168.1.3"
 (ketama/find-node @ring1 (resource-hash "test_resource"))
 ;; "192.168.1.3"
+;; higher weight - higher probability to use this server
 
 (def ring2 (atom (ketama/make-ring [(s/make-server "192.168.1.1" 1)
                                     (s/make-server "192.168.1.2" 2)
@@ -31,13 +32,9 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
 (ketama/find-node @ring2 (resource-hash "test_resource"))
 ;; "192.168.1.3"
 
-(def ring3 (atom (ketama/make-ring [(s/make-server "192.168.1.1" 1)
-                                    (s/make-server "192.168.1.2" 2)])))
-
-(ketama/find-node @ring3 (resource-hash "some_resource-1"))
-;; "192.168.1.2"
-(ketama/find-node @ring3 (resource-hash "test_resource"))
-;; "192.168.1.2"
+;; in case of topology changes its supposed to create new ring based on new list of servers
+;; current servers can be obtained:
+(ketama/get-servers @ring2)
 
 
 ```
