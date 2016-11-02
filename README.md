@@ -43,4 +43,4 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
 
 1. Clojure [http://clojure.org/](http://clojure.org/ "Clojure")  
 2. Consistent hashing [https://en.wikipedia.org/wiki/Consistent_hashing](https://en.wikipedia.org/wiki/Consistent_hashing "Consistent hashing")  
-3. Ketama consistent hashing algorithm [link](https://www.google.ru/?gws_rd=ssl#newwindow=1&q=ketama+consistent+hashing "ketama")  
+3. Ketama consistent hashing [algorithm](https://www.google.ru/?gws_rd=ssl#newwindow=1&q=ketama+consistent+hashing "ketama")  
