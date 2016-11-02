@@ -5,7 +5,7 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
 ## Usage
 
 ```Clojure
-(require '[clj-ketama.consistent-hash :as ketama])
+(require '[clj-ketama.core :as ketama])
 (require '[clj-ketama.server :as s])
 
 (defn resource-hash [resource]

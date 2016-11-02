@@ -1,4 +1,4 @@
-(ns clj-ketama.consistent-hash
+(ns clj-ketama.core
   (:require [clj-ketama.ring :as ring])
   (:import [clj_ketama.ring Ring])
   (:require [clj-ketama.server])

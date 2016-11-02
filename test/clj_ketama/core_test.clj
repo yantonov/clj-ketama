@@ -1,6 +1,6 @@
-(ns clj-ketama.consistent-hash-test
+(ns clj-ketama.core-test
   (:require [clojure.test :refer :all])
-  (:require [clj-ketama.consistent-hash :as ketama])
+  (:require [clj-ketama.core :as ketama])
   (:require [clj-ketama.server :as svr]))
 
 (deftest no-servers
