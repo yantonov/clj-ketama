@@ -13,7 +13,7 @@ clojure implementation of [ketama](https://www.google.ru/?gws_rd=ssl#newwindow=1
 
 (def ring1 (atom (ketama/make-ring [(s/make-server "192.168.1.1" 1) ; server1 weight = 1 
                                     (s/make-server "192.168.1.2" 2) ; server2 weight = 2
-                                    (s/make-server "192.168.1.3" 3) ; serverweight = 3
+                                    (s/make-server "192.168.1.3" 3) ; server3 weight = 3
                                    ])))
 
 (ketama/find-node @ring1 (resource-hash "some_resource-1"))
